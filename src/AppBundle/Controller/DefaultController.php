@@ -2,20 +2,31 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
 
-class DefaultController extends Controller
+class DefaultController
 {
     /**
-     * @Route(path="/login", name="homepage")
+     * @var RouterInterface
      */
-    public function indexAction(Request $request)
+    private $router;
+
+    /**
+     * DefaultController constructor.
+     * @param RouterInterface $router
+     */
+    function __construct(RouterInterface $router)
     {
-        // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
-        ]);
+        $this->router = $router;
+    }
+
+    /**
+     * @Route(path="/", name="homepage")
+     */
+    public function indexAction()
+    {
+        return new RedirectResponse($this->router->generate('login'));
     }
 }

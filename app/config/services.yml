@@ -29,6 +29,11 @@ services:
         public: true
         tags: ['controller.service_arguments']
 
+    AppBundle\Subscriber\:
+        resource: '../../src/AppBundle/Subscriber'
+        public: true
+        tags: ['kernel.event_subscriber']
+
     # add more services, or override services that need manual wiring
     # AppBundle\Service\ExampleService:
     #     arguments:

@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="periode")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PeriodeRepository")
  */
-class Periode
+class Periode implements GezinInterface
 {
     /**
      * @var int
@@ -49,6 +49,13 @@ class Periode
      */
     private $gebruikers;
 
+    /**
+     * @var Gezin
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Gezin", inversedBy="periodes")
+     * @ORM\JoinColumn(name="gezin_id", referencedColumnName="id")
+     */
+    private $gezin;
 
     /**
      * Get id
@@ -155,5 +162,28 @@ class Periode
     {
         return $this->gebruikers;
     }
-}
 
+    /**
+     * Set gezin
+     *
+     * @param Gezin $gezin
+     *
+     * @return Periode
+     */
+    public function setGezin(Gezin $gezin = null)
+    {
+        $this->gezin = $gezin;
+
+        return $this;
+    }
+
+    /**
+     * Get gezin
+     *
+     * @return Gezin
+     */
+    public function getGezin()
+    {
+        return $this->gezin;
+    }
+}

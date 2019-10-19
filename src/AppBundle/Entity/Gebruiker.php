@@ -4,14 +4,16 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Gebruiker
  *
  * @ORM\Table(name="gebruiker")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\GebruikerRepository")
+ * @UniqueEntity(fields="gebruikersnaam", message="Username already taken")
  */
-class Gebruiker implements UserInterface
+class Gebruiker implements UserInterface, GezinInterface
 {
     /**
      * @var int
@@ -35,6 +37,14 @@ class Gebruiker implements UserInterface
      * @ORM\Column(name="wachtwoord", type="string", length=255)
      */
     private $wachtwoord;
+
+    /**
+     * @var Gezin
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Gezin", inversedBy="gebruikers")
+     * @ORM\JoinColumn(name="gezin_id", referencedColumnName="id")
+     */
+    private $gezin;
 
     /**
      * Get id
@@ -110,7 +120,7 @@ class Gebruiker implements UserInterface
      */
     public function getRoles()
     {
-        // TODO: Implement getRoles() method.
+        return ['ROLE_USER'];
     }
 
     /**
@@ -123,7 +133,7 @@ class Gebruiker implements UserInterface
      */
     public function getPassword()
     {
-        // TODO: Implement getPassword() method.
+        return $this->wachtwoord;
     }
 
     /**
@@ -135,7 +145,7 @@ class Gebruiker implements UserInterface
      */
     public function getSalt()
     {
-        // TODO: Implement getSalt() method.
+        return null;
     }
 
     /**
@@ -145,7 +155,7 @@ class Gebruiker implements UserInterface
      */
     public function getUsername()
     {
-        // TODO: Implement getUsername() method.
+        return $this->gebruikersnaam;
     }
 
     /**
@@ -158,5 +168,28 @@ class Gebruiker implements UserInterface
     {
         // TODO: Implement eraseCredentials() method.
     }
-}
 
+    /**
+     * Set gezin
+     *
+     * @param Gezin $gezin
+     *
+     * @return Gebruiker
+     */
+    public function setGezin(Gezin $gezin = null)
+    {
+        $this->gezin = $gezin;
+
+        return $this;
+    }
+
+    /**
+     * Get gezin
+     *
+     * @return Gezin
+     */
+    public function getGezin()
+    {
+        return $this->gezin;
+    }
+}

@@ -1,0 +1,70 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Gezin
+ *
+ * @ORM\Table(name="gezin")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\GezinRepository")
+ */
+class Gezin
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var Collection
+     *
+     *@ORM\OneToMany(targetEntity="AppBundle\Entity\Gebruiker", mappedBy="gezin")
+     */
+    private $gebruikers;
+
+    /**
+     * @var Collection
+     *
+     *@ORM\OneToMany(targetEntity="AppBundle\Entity\Periode", mappedBy="gezin")
+     */
+    private $periodes;
+
+    /**
+     * @var Collection
+     *
+     *@ORM\OneToMany(targetEntity="AppBundle\Entity\Winkel", mappedBy="gezin")
+     */
+    private $winkels;
+
+    /**
+     * @var Collection
+     *
+     *@ORM\OneToMany(targetEntity="AppBundle\Entity\Uitgave", mappedBy="gezin")
+     */
+    private $uitgaves;
+
+    /**
+     * @var Collection
+     *
+     *@ORM\OneToMany(targetEntity="AppBundle\Entity\Categorie", mappedBy="gezin")
+     */
+    private $categories;
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+}
+

@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -22,40 +24,51 @@ class Gezin
     private $id;
 
     /**
-     * @var string
+     * @var Collection
      *
-     * @ORM\Column(name="gebruikers", type="string", length=255)
+     *@ORM\OneToMany(targetEntity="AppBundle\Entity\Gebruiker", mappedBy="gezin")
      */
     private $gebruikers;
 
     /**
-     * @var string
+     * @var Collection
      *
-     * @ORM\Column(name="periodes", type="string", length=255)
+     *@ORM\OneToMany(targetEntity="AppBundle\Entity\Periode", mappedBy="gezin")
      */
     private $periodes;
 
     /**
-     * @var string
+     * @var Collection
      *
-     * @ORM\Column(name="uitgaven", type="string", length=255)
-     */
-    private $uitgaven;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="winkels", type="string", length=255)
+     *@ORM\OneToMany(targetEntity="AppBundle\Entity\Winkel", mappedBy="gezin")
      */
     private $winkels;
 
     /**
-     * @var string
+     * @var Collection
      *
-     * @ORM\Column(name="categorien", type="string", length=255)
+     *@ORM\OneToMany(targetEntity="AppBundle\Entity\Uitgave", mappedBy="gezin")
      */
-    private $categorien;
+    private $uitgaves;
 
+    /**
+     * @var Collection
+     *
+     *@ORM\OneToMany(targetEntity="AppBundle\Entity\Categorie", mappedBy="gezin")
+     */
+    private $categories;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->gebruikers = new ArrayCollection();
+        $this->periodes = new ArrayCollection();
+        $this->winkels = new ArrayCollection();
+        $this->uitgaves = new ArrayCollection();
+        $this->categories = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -68,23 +81,34 @@ class Gezin
     }
 
     /**
-     * Set gebruikers
+     * Add gebruiker
      *
-     * @param string $gebruikers
+     * @param Gebruiker $gebruiker
      *
      * @return Gezin
      */
-    public function setGebruikers($gebruikers)
+    public function addGebruiker(Gebruiker $gebruiker)
     {
-        $this->gebruikers = $gebruikers;
+        $this->gebruikers[] = $gebruiker;
+        $gebruiker->setGezin($this);
 
         return $this;
     }
 
     /**
+     * Remove gebruiker
+     *
+     * @param Gebruiker $gebruiker
+     */
+    public function removeGebruiker(Gebruiker $gebruiker)
+    {
+        $this->gebruikers->removeElement($gebruiker);
+    }
+
+    /**
      * Get gebruikers
      *
-     * @return string
+     * @return Collection
      */
     public function getGebruikers()
     {
@@ -92,23 +116,34 @@ class Gezin
     }
 
     /**
-     * Set periodes
+     * Add periode
      *
-     * @param string $periodes
+     * @param Periode $periode
      *
      * @return Gezin
      */
-    public function setPeriodes($periodes)
+    public function addPeriode(Periode $periode)
     {
-        $this->periodes = $periodes;
+        $this->periodes[] = $periode;
+        $periode->setGezin($this);
 
         return $this;
     }
 
     /**
+     * Remove periode
+     *
+     * @param Periode $periode
+     */
+    public function removePeriode(Periode $periode)
+    {
+        $this->periodes->removeElement($periode);
+    }
+
+    /**
      * Get periodes
      *
-     * @return string
+     * @return Collection
      */
     public function getPeriodes()
     {
@@ -116,47 +151,34 @@ class Gezin
     }
 
     /**
-     * Set uitgaven
+     * Add winkel
      *
-     * @param string $uitgaven
+     * @param Winkel $winkel
      *
      * @return Gezin
      */
-    public function setUitgaven($uitgaven)
+    public function addWinkel(Winkel $winkel)
     {
-        $this->uitgaven = $uitgaven;
+        $this->winkels[] = $winkel;
+        $winkel->setGezin($this);
 
         return $this;
     }
 
     /**
-     * Get uitgaven
+     * Remove winkel
      *
-     * @return string
+     * @param Winkel $winkel
      */
-    public function getUitgaven()
+    public function removeWinkel(Winkel $winkel)
     {
-        return $this->uitgaven;
-    }
-
-    /**
-     * Set winkels
-     *
-     * @param string $winkels
-     *
-     * @return Gezin
-     */
-    public function setWinkels($winkels)
-    {
-        $this->winkels = $winkels;
-
-        return $this;
+        $this->winkels->removeElement($winkel);
     }
 
     /**
      * Get winkels
      *
-     * @return string
+     * @return Collection
      */
     public function getWinkels()
     {
@@ -164,27 +186,72 @@ class Gezin
     }
 
     /**
-     * Set categorien
+     * Add uitgafe
      *
-     * @param string $categorien
+     * @param Uitgave $uitgafe
      *
      * @return Gezin
      */
-    public function setCategorien($categorien)
+    public function addUitgafe(Uitgave $uitgafe)
     {
-        $this->categorien = $categorien;
+        $this->uitgaves[] = $uitgafe;
+        $uitgafe->setGezin($this);
 
         return $this;
     }
 
     /**
-     * Get categorien
+     * Remove uitgafe
      *
-     * @return string
+     * @param Uitgave $uitgafe
      */
-    public function getCategorien()
+    public function removeUitgafe(Uitgave $uitgafe)
     {
-        return $this->categorien;
+        $this->uitgaves->removeElement($uitgafe);
+    }
+
+    /**
+     * Get uitgaves
+     *
+     * @return Collection
+     */
+    public function getUitgaves()
+    {
+        return $this->uitgaves;
+    }
+
+    /**
+     * Add category
+     *
+     * @param Categorie $category
+     *
+     * @return Gezin
+     */
+    public function addCategory(Categorie $category)
+    {
+        $this->categories[] = $category;
+        $category->setGezin($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove category
+     *
+     * @param Categorie $category
+     */
+    public function removeCategory(Categorie $category)
+    {
+        $this->categories->removeElement($category);
+    }
+
+    /**
+     * Get categories
+     *
+     * @return Collection
+     */
+    public function getCategories()
+    {
+        return $this->categories;
     }
 }
-

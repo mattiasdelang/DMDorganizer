@@ -1,0 +1,70 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Periode
+ *
+ * @ORM\Table(name="periode")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\PeriodeRepository")
+ */
+class Periode
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="naam", type="string", length=255)
+     */
+    private $naam;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="van", type="datetime")
+     */
+    private $van;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="tot", type="datetime")
+     */
+    private $tot;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="gebruikers", type="string", length=255)
+     */
+    private $gebruikers;
+
+    /**
+     * @var Gezin
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Gezin", inversedBy="periodes")
+     * @ORM\JoinColumn(name="gezin_id", referencedColumnName="id")
+     */
+    private $gezin;
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+}
+

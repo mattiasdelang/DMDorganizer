@@ -1,0 +1,55 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Categorie
+ *
+ * @ORM\Table(name="categorie")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CategorieRepository")
+ */
+class Categorie
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="naam", type="string", length=255)
+     */
+    private $naam;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Uitgave", inversedBy="categories")
+     * @ORM\JoinTable(name="categorie_uitgave")
+     */
+    private $uitgaves;
+
+    /**
+     * @var Gezin
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Gezin", inversedBy="categories")
+     * @ORM\JoinColumn(name="gezin_id", referencedColumnName="id")
+     */
+    private $gezin;
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+}
+

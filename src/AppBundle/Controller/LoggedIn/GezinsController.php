@@ -2,17 +2,39 @@
 
 namespace AppBundle\Controller\LoggedIn;
 
+use AppBundle\Manager\GezinsManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 class GezinsController extends Controller
 {
     /**
-     * @Route("/overview", name="overzicht")
+     * @var GezinsManager
      */
-    public function indexAction(Request $request)
+    private $manager;
+
+    /**
+     * GezinsController constructor.
+     * @param GezinsManager $manager
+     */
+    public function __construct(GezinsManager $manager)
     {
-       return [];
+        $this->manager = $manager;
+    }
+
+    /**
+     * @Route("/overview", name="overzicht")
+     * @Template("LoggedIn/Overview.twig")
+     */
+    public function indexAction()
+    {
+       return [
+           'categorien' => $this->manager->getCategorien(),
+           'winkels' => $this->manager->getWinkels(),
+           'periodes' => $this->manager->getPeriodes(),
+           'uitgaven' => $this->manager->getUitgaven(),
+           'gebruikers' => $this->manager->getGebruikers()
+       ];
     }
 }

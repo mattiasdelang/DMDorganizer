@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="winkel")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\WinkelRepository")
  */
-class Winkel
+class Winkel implements GezinInterface
 {
     /**
      * @var int
@@ -42,7 +44,29 @@ class Winkel
      */
     private $logo;
 
+    /**
+     * @var Collection
+     *
+     *@ORM\OneToMany(targetEntity="AppBundle\Entity\Uitgave", mappedBy="gezin")
+     */
+    private $uitgaves;
 
+    /**
+     * @var Gezin
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Gezin", inversedBy="winkels")
+     * @ORM\JoinColumn(name="gezin_id", referencedColumnName="id")
+     */
+    private $gezin;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->uitgaves = new ArrayCollection();
+    }
+    
     /**
      * Get id
      *
@@ -124,5 +148,62 @@ class Winkel
     {
         return $this->logo;
     }
-}
 
+    /**
+     * Add uitgafe
+     *
+     * @param Uitgave $uitgafe
+     *
+     * @return Winkel
+     */
+    public function addUitgafe(Uitgave $uitgafe)
+    {
+        $this->uitgaves[] = $uitgafe;
+
+        return $this;
+    }
+
+    /**
+     * Remove uitgafe
+     *
+     * @param Uitgave $uitgafe
+     */
+    public function removeUitgafe(Uitgave $uitgafe)
+    {
+        $this->uitgaves->removeElement($uitgafe);
+    }
+
+    /**
+     * Get uitgaves
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUitgaves()
+    {
+        return $this->uitgaves;
+    }
+
+    /**
+     * Set gezin
+     *
+     * @param Gezin $gezin
+     *
+     * @return Winkel
+     */
+    public function setGezin(Gezin $gezin = null)
+    {
+        $this->gezin = $gezin;
+
+        return $this;
+    }
+
+    /**
+     * Get gezin
+     *
+     * @return Gezin
+     */
+    public function getGezin()
+    {
+        return $this->gezin;
+    }
+}

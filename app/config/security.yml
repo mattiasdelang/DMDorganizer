@@ -22,15 +22,17 @@ security:
 
         main:
             anonymous: ~
+            provider: app_user_provider
             form_login:
                 login_path: login
-                check_path: login
-            # activate different ways to authenticate
+                check_path: login_check
+                username_parameter: login[_username]
+                password_parameter: login[_password]
+                target_path_parameter: login[_target_path]
+            logout:
+              path: /logout
 
-            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-            #http_basic: ~
-
-            # https://symfony.com/doc/current/security/form_login_setup.html
-            #form_login: ~
     access_control:
         - { path: ^/overview, roles: ROLE_USER }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }

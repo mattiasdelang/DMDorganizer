@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="uitgave")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\uitgaveRepository")
  */
-class uitgave
+class Uitgave implements GezinInterface
 {
     /**
      * @var int
@@ -52,24 +54,41 @@ class uitgave
     /**
      * @var string
      *
-     * @ORM\Column(name="winkel", type="string", length=255)
-     */
-    private $winkel;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="categorie", type="string", length=255)
-     */
-    private $categorie;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="locatie", type="string", length=255)
      */
     private $locatie;
 
+    /**
+     * @var Collection
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Categorie", mappedBy="uitgaves")
+     */
+    private $categories;
+
+    /**
+     * @var Winkel
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Winkel", inversedBy="uitgaves")
+     * @ORM\JoinColumn(name="winkel_id", referencedColumnName="id")
+     */
+    private $winkel;
+
+    /**
+     * @var Gezin
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Gezin", inversedBy="uitgaves")
+     * @ORM\JoinColumn(name="gezin_id", referencedColumnName="id")
+     */
+    private $gezin;
+
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -86,7 +105,7 @@ class uitgave
      *
      * @param float $bedrag
      *
-     * @return uitgave
+     * @return Uitgave
      */
     public function setBedrag($bedrag)
     {
@@ -110,7 +129,7 @@ class uitgave
      *
      * @param string $fotoRekening
      *
-     * @return uitgave
+     * @return Uitgave
      */
     public function setFotoRekening($fotoRekening)
     {
@@ -134,7 +153,7 @@ class uitgave
      *
      * @param string $betaaldDoor
      *
-     * @return uitgave
+     * @return Uitgave
      */
     public function setBetaaldDoor($betaaldDoor)
     {
@@ -158,7 +177,7 @@ class uitgave
      *
      * @param \DateTime $uitgegevenOp
      *
-     * @return uitgave
+     * @return Uitgave
      */
     public function setUitgegevenOp($uitgegevenOp)
     {
@@ -178,59 +197,11 @@ class uitgave
     }
 
     /**
-     * Set winkel
-     *
-     * @param string $winkel
-     *
-     * @return uitgave
-     */
-    public function setWinkel($winkel)
-    {
-        $this->winkel = $winkel;
-
-        return $this;
-    }
-
-    /**
-     * Get winkel
-     *
-     * @return string
-     */
-    public function getWinkel()
-    {
-        return $this->winkel;
-    }
-
-    /**
-     * Set categorie
-     *
-     * @param string $categorie
-     *
-     * @return uitgave
-     */
-    public function setCategorie($categorie)
-    {
-        $this->categorie = $categorie;
-
-        return $this;
-    }
-
-    /**
-     * Get categorie
-     *
-     * @return string
-     */
-    public function getCategorie()
-    {
-        return $this->categorie;
-    }
-
-    /**
      * Set locatie
      *
      * @param string $locatie
      *
-     * @return uitgave
+     * @return Uitgave
      */
     public function setLocatie($locatie)
     {
@@ -248,5 +219,86 @@ class uitgave
     {
         return $this->locatie;
     }
-}
 
+    /**
+     * Add category
+     *
+     * @param Categorie $category
+     *
+     * @return Uitgave
+     */
+    public function addCategory(Categorie $category)
+    {
+        $this->categories[] = $category;
+
+        return $this;
+    }
+
+    /**
+     * Remove category
+     *
+     * @param Categorie $category
+     */
+    public function removeCategory(Categorie $category)
+    {
+        $this->categories->removeElement($category);
+    }
+
+    /**
+     * Get categories
+     *
+     * @return Collection
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+
+    /**
+     * Set winkel
+     *
+     * @param Winkel $winkel
+     *
+     * @return Uitgave
+     */
+    public function setWinkel(Winkel $winkel = null)
+    {
+        $this->winkel = $winkel;
+
+        return $this;
+    }
+
+    /**
+     * Get winkel
+     *
+     * @return Winkel
+     */
+    public function getWinkel()
+    {
+        return $this->winkel;
+    }
+
+    /**
+     * Set gezin
+     *
+     * @param Gezin $gezin
+     *
+     * @return Uitgave
+     */
+    public function setGezin(Gezin $gezin = null)
+    {
+        $this->gezin = $gezin;
+
+        return $this;
+    }
+
+    /**
+     * Get gezin
+     *
+     * @return Gezin
+     */
+    public function getGezin()
+    {
+        return $this->gezin;
+    }
+}
