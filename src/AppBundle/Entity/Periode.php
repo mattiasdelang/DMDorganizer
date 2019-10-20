@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -43,9 +45,11 @@ class Periode implements GezinInterface
     private $tot;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="gebruikers", type="string", length=255)
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Gebruiker")
+     * @ORM\JoinTable(name="periode_gebruiker",
+     *      joinColumns={@ORM\JoinColumn(name="periode_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="gebruiker_id", referencedColumnName="id")}
+     *      )
      */
     private $gebruikers;
 
@@ -56,6 +60,14 @@ class Periode implements GezinInterface
      * @ORM\JoinColumn(name="gezin_id", referencedColumnName="id")
      */
     private $gezin;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->gebruikers = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -140,23 +152,33 @@ class Periode implements GezinInterface
     }
 
     /**
-     * Set gebruikers
+     * Add gebruiker
      *
-     * @param string $gebruikers
+     * @param Gebruiker $gebruiker
      *
      * @return Periode
      */
-    public function setGebruikers($gebruikers)
+    public function addGebruiker(Gebruiker $gebruiker)
     {
-        $this->gebruikers = $gebruikers;
+        $this->gebruikers[] = $gebruiker;
 
         return $this;
     }
 
     /**
+     * Remove gebruiker
+     *
+     * @param Gebruiker $gebruiker
+     */
+    public function removeGebruiker(Gebruiker $gebruiker)
+    {
+        $this->gebruikers->removeElement($gebruiker);
+    }
+
+    /**
      * Get gebruikers
      *
-     * @return string
+     * @return Collection
      */
     public function getGebruikers()
     {
@@ -176,7 +198,6 @@ class Periode implements GezinInterface
 
         return $this;
     }
-
     /**
      * Get gezin
      *

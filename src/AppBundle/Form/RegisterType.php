@@ -26,6 +26,7 @@ class RegisterType extends AbstractType
             ->add('opslaan', SubmitType::class)
         ;
     }
+
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
@@ -33,4 +34,3 @@ class RegisterType extends AbstractType
         ));
     }
 }
-?>

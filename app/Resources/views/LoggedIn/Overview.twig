@@ -1,5 +1,53 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    Hello, {{ app.user.gebruikersnaam }}
+    Hello, {{ app.user.gebruikersnaam }}<br><br>
+
+    {% if app.user.gezin is null %}
+
+        Geen gezin gevonden, <a href="{{ path('gezin') }}">maak aan</a>
+
+    {% else %}
+
+        <h4>Uitgaven</h4> <a href="{{ path('uitgave') }}">Toevoegen</a>
+        <ul>
+            {% for uitgave in uitgaven %}
+                <li> {{ uitgave.bedrag }}€</li>
+            {% endfor %}
+        </ul>
+        <hr>
+
+        <h4>Periodes</h4> <a href="{{ path('periode') }}">Toevoegen</a>
+        <ul>
+            {% for periode in periodes %}
+                <li>{{periode. naam }}({{ periode.van|date('d/m/y') }} - {{ periode.tot|date('d/m/y') }})</li>
+            {% endfor %}
+        </ul>
+        <hr>
+
+        <h4>Winkels</h4> <a href="{{ path('winkel') }}">Toevoegen</a>
+        <ul>
+            {% for winkel in winkels %}
+                <li>{{ winkel.naam }}</li>
+            {% endfor %}
+        </ul>
+        <hr>
+
+        <h4>Categorien</h4> <a href="{{ path('categorie') }}">Toevoegen</a>
+        <ul>
+            {% for categorie in categorien %}
+                <li>{{ categorie.naam }}</li>
+            {% endfor %}
+        </ul>
+        <hr>
+
+        <h4>Gebruikers</h4>
+        <ul>
+            {% for gebruiker in gebruikers %}
+                <li>{{ gebruiker.gebruikersnaam }}</li>
+            {% endfor %}
+        </ul>
+        <hr>
+
+    {% endif %}
 {% endblock %}

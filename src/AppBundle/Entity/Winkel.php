@@ -47,7 +47,7 @@ class Winkel implements GezinInterface
     /**
      * @var Collection
      *
-     *@ORM\OneToMany(targetEntity="AppBundle\Entity\Uitgave", mappedBy="gezin")
+     *@ORM\OneToMany(targetEntity="AppBundle\Entity\Uitgave", mappedBy="winkel")
      */
     private $uitgaves;
 

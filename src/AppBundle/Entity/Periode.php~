@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="periode")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PeriodeRepository")
  */
-class Periode
+class Periode implements GezinInterface
 {
     /**
      * @var int
@@ -43,9 +43,11 @@ class Periode
     private $tot;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="gebruikers", type="string", length=255)
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Gebruiker")
+     * @ORM\JoinTable(name="periode_gebruiker",
+     *      joinColumns={@ORM\JoinColumn(name="periode_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="gebruiker_id", referencedColumnName="id")}
+     *      )
      */
     private $gebruikers;
 
@@ -66,5 +68,100 @@ class Periode
     {
         return $this->id;
     }
-}
 
+    /**
+     * Set naam
+     *
+     * @param string $naam
+     *
+     * @return Periode
+     */
+    public function setNaam($naam)
+    {
+        $this->naam = $naam;
+
+        return $this;
+    }
+
+    /**
+     * Get naam
+     *
+     * @return string
+     */
+    public function getNaam()
+    {
+        return $this->naam;
+    }
+
+    /**
+     * Set van
+     *
+     * @param \DateTime $van
+     *
+     * @return Periode
+     */
+    public function setVan($van)
+    {
+        $this->van = $van;
+
+        return $this;
+    }
+
+    /**
+     * Get van
+     *
+     * @return \DateTime
+     */
+    public function getVan()
+    {
+        return $this->van;
+    }
+
+    /**
+     * Set tot
+     *
+     * @param \DateTime $tot
+     *
+     * @return Periode
+     */
+    public function setTot($tot)
+    {
+        $this->tot = $tot;
+
+        return $this;
+    }
+
+    /**
+     * Get tot
+     *
+     * @return \DateTime
+     */
+    public function getTot()
+    {
+        return $this->tot;
+    }
+
+    /**
+     * Set gezin
+     *
+     * @param Gezin $gezin
+     *
+     * @return Periode
+     */
+    public function setGezin(Gezin $gezin = null)
+    {
+        $this->gezin = $gezin;
+
+        return $this;
+    }
+
+    /**
+     * Get gezin
+     *
+     * @return Gezin
+     */
+    public function getGezin()
+    {
+        return $this->gezin;
+    }
+}

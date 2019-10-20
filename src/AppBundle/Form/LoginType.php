@@ -53,4 +53,3 @@ class LoginType extends AbstractType
         ));
     }
 }
-?>
